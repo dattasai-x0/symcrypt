@@ -2,9 +2,11 @@ from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.PublicKey import RSA
 from Crypto.Random import get_random_bytes
 import base64
-
 import matplotlib.pyplot as plt
+import re
+import regex
 
+plt.rcParams['font.family'] = 'Segoe UI Emoji'  # or 'Noto Color Emoji'
 
 # Step 1: Original message
 message = "Education loan approved for ₹10,00,000"
@@ -58,8 +60,22 @@ reverse_symbol_map = {v: k for k, v in symbol_map.items()}
 # Simulated symbolic input (from previous step)
 symbolic_input = symbolic_output  # Replace with actual symbolic string
 
+# Break symbolic string into grapheme clusters (full emojis)
+symbols = regex.findall(r'\X', symbolic_input)
+
+
 # Decode symbols back to base64 string
-decoded_base64 = ''.join(reverse_symbol_map.get(sym, sym) for sym in symbolic_input)
+decoded_base64 = ''
+for sym in symbols:
+    if sym in reverse_symbol_map:
+        decoded_base64 += reverse_symbol_map[sym]
+    else:
+        raise ValueError(f"Unrecognized symbol: {sym}")
+
+    
+if not re.fullmatch(r'[A-Za-z0-9+/=]+', decoded_base64):
+    raise ValueError("Decoded string contains invalid base64 characters")
+
 
 # Convert base64 back to bytes
 ciphertext_aes_decoded = base64.b64decode(decoded_base64)
@@ -78,7 +94,7 @@ print(original_message.decode())
 
 # Visualization of the symbolic encrypted message
 # Convert symbolic string to list of emojis
-symbols = list(symbolic_output)
+ssymbols = regex.findall(r'\X', symbolic_output)
 
 # Define grid size (e.g., 16x16)
 grid_size = 16
