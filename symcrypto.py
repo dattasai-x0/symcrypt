@@ -87,7 +87,7 @@ grid_size = 16
 rows = [symbols[i:i+grid_size] for i in range(0, len(symbols), grid_size)]
 
 # Plot the grid
-fig, ax = plt.subplots(figsize=(7, 7))
+fig, ax = plt.subplots(figsize=(10, 10))
 ax.set_xlim(-0.5, grid_size - 0.5)
 ax.set_ylim(-len(rows) + 0.5, 0.5)
 ax.set_xticks(range(grid_size))

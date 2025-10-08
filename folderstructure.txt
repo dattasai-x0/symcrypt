@@ -1,0 +1,5 @@
+/symcrypt_live
+├── app.py                  # Flask backend
+├── symcrypto.py        # Encryption logic
+├── templates/
+│   └── index.html          # HTML frontend
